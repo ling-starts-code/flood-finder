@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+FloodFinder
+FloodFinder is a web application that estimates a potential flooding hazard in the Greater Wellington region by utilizing data provided by the Metservice. The app is built using Ruby on Rails and Ruby.
 
-Things you may want to cover:
 
-* Ruby version
+To use FloodFinder, follow these steps:
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Enter a location in the search bar on the homepage.
+The app will scrap data from the Metservice webpage and estimate the potential hazard for the entered location.
+The estimated flood hazard will be displayed on a map.
