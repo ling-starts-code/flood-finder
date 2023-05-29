@@ -1,0 +1,91 @@
+name: Checks
+
+on:
+  pull_request:
+
+  workflow_dispatch:
+
+env:
+  RAILS_ENV: test
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/flood_finder_test
+  REDIS_URL: redis://localhost:6379/8
+  SIDEKIQ_WEB_USERNAME: admin
+  SIDEKIQ_WEB_PASSWORD: password
+  RAILS_SECRET_KEY_BASE: anything
+  SECRET_KEY_BASE: anything
+  MAIL_FROM: changeme@example.com
+  SENTRY_CSP_HEADER_REPORT_ENDPOINT: https://SOMECODE.ingest.sentry.io/api/SOMENUMS/security/?sentry_key=SOMETHING
+  SENTRY_ENV: test
+
+jobs:
+  linters:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run Rubocop
+        run: |
+          bundle exec rubocop --disable-pending-cops
+
+      - name: Run Brakeman
+        run: |
+          gem install --no-document brakeman
+          brakeman --run-all-checks --exit-on-warn --format plain .
+
+      - name: Run Bundle Audit
+        run: |
+          bundle exec bundle audit --update
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: flood_finder_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install Required OS Packages
+        run: |
+          sudo apt-get -yqq install libpq-dev
+
+      - name: Prepare Database
+        run: |
+          bundle exec rails db:prepare
+
+      - name: Precompile Assets
+        run: |
+          bundle exec rails assets:precompile
+
+      - name: Run Specs
+        run: |
+          bundle exec rspec spec --format progress
