@@ -32,6 +32,7 @@ jobs:
 
       - name: Run Rubocop
         run: |
+          gem install --no-document rubocop
           bundle exec rubocop --disable-pending-cops
 
       - name: Run Brakeman
@@ -41,13 +42,14 @@ jobs:
 
       - name: Run Bundle Audit
         run: |
+          gem install --no-document bundle audit
           bundle exec bundle audit --update
   tests:
     runs-on: ubuntu-latest
     services:
       db:
         image: postgres
-        ports: ['5432:5432']
+        ports: ["5432:5432"]
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -59,7 +61,7 @@ jobs:
           --health-retries 5
       redis:
         image: redis
-        ports: ['6379:6379']
+        ports: ["6379:6379"]
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
