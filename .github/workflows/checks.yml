@@ -32,7 +32,6 @@ jobs:
 
       - name: Run Rubocop
         run: |
-          gem install --no-document rubocop
           bundle exec rubocop --disable-pending-cops
 
       - name: Run Brakeman
@@ -42,7 +41,6 @@ jobs:
 
       - name: Run Bundle Audit
         run: |
-          gem install --no-document bundle audit
           bundle exec bundle audit --update
   tests:
     runs-on: ubuntu-latest
