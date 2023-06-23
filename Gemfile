@@ -68,6 +68,7 @@ group :development do
   gem 'rubocop', require: false
   gem 'brakeman'
   gem 'bundle-audit'
+  gem 'rubcop-discourse'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
