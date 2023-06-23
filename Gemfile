@@ -67,7 +67,9 @@ group :development do
   gem 'brakeman'
   gem 'bundle-audit'
   gem 'rubocop', require: false
-  gem 'rubocop-discourse'
+  gem "rubocop-performance", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
   gem 'web-console'
 end
 
