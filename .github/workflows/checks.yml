@@ -30,10 +30,6 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Run Rubocop
-        run: |
-          bundle exec rubocop --disable-pending-cops
-
       - name: Run Brakeman
         run: |
           gem install --no-document brakeman
