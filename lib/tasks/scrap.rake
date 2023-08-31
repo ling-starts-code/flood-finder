@@ -1,5 +1,5 @@
 require 'nokogiri'
-require 'httparty'
+require 'open-uri'
 require 'byebug'
 
 namespace :scrape do
@@ -7,13 +7,48 @@ namespace :scrape do
   task weather: :environment do
     puts "starting the scripts"
 
-    url = 'https://www.metservice.com/maps-radar/3-hourly-observations#wellington-and-wairarapa'
-    doc = Nokogiri::HTML( HTTParty.get(url))
+    # url = 'https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations#wellington-and-wairarapa'
+    #doc = Nokogiri::HTML( HTTParty.get(url))
 
-    result = doc.css("title")
-    body = doc.css("body")
+    url = "https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations"
+    
+    doc = Nokogiri::HTML(URI.open(url))
+  
+    #json_string = JSON.dump(doc)
+   # parsed_data = JSON.parse(json_string)
+    
+    #urlSlug = doc.xpath("//urlSlug")
+  
+    text = doc.text()
+
+    locations = []
+    results = []
+
+     doc.css('div').each do |div_element|
+      # result = div_element.children[1].children
+
+      location = div_element.text.strip
+      li = div_element.css("li").text.strip
+    
+      # observations << observation
+      locations << location
+      results << li
+     end
+
+ # Print the extracted observations
+  locations.each do |location|
+   puts location
+  end
+
+   results.each do |li|
+    puts li
+ end
+    
+ byebug
+    
+    
     main = doc.css("main")
-    byebug
+  
   
     # response = HTTParty.get(url)
 
