@@ -3,24 +3,26 @@ require 'open-uri'
 require 'byebug'
 
 namespace :scrape do
-   KNOWN_LOCATIONS = [
-      "Wellington",
-      "Castlepoint",
-      "Levin",
-      "Mana Island"
-   ]
+  KNOWN_LOCATIONS = [
+    "Wellington",
+    "Castlepoint",
+    "Levin",
+    "Mana Island"
+  ]
 
-   desc 'Scrape weather data from metservice.com and save to database'
-   task weather: :environment do
-      puts "starting the scripts"
-      url = "https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations"
-      doc = Nokogiri::HTML(URI.open(url))
+  desc 'Scrape weather data from metservice.com and save to database'
+  task weather: :environment do
+    puts "starting the scripts"
+    url = "https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations"
+    doc = Nokogiri::HTML(URI.open(url))
 
-      doc.css('div').each do |div_element|
-         location = div_element.text.strip
-         next unless KNOWN_LOCATIONS.map { |loc| location.include?(loc) }.first
-         puts location
-      end
+    locations = doc.css('div').map do |div_element|
+      location = div_element.text.strip
+      next unless KNOWN_LOCATIONS.map { |loc| location.include?(loc) }.first
+      location
+    end.compact
+
+    locations.each{ |location| puts location }
 
     # if response.code == 200
     #   html = Nokogiri::HTML(response.body)
