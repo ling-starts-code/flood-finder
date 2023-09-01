@@ -3,6 +3,7 @@ require 'open-uri'
 require 'byebug'
 
 namespace :scrape do
+  THREE_HOURLY_OBSERVATION_URL = "https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations"
   KNOWN_LOCATIONS = [
     "Wellington",
     "Castlepoint",
@@ -13,12 +14,11 @@ namespace :scrape do
   desc 'Scrape weather data from metservice.com and save to database'
   task weather: :environment do
     puts "starting the scripts"
-    url = "https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations"
-    doc = Nokogiri::HTML(URI.open(url))
+    doc = Nokogiri::HTML(URI.open(THREE_HOURLY_OBSERVATION_URL))
 
     locations = doc.css('div').map do |div_element|
       location = div_element.text.strip
-      next unless KNOWN_LOCATIONS.map{ |loc| location.include?(loc) }.uniq.any?{ |x| x == true }
+      next unless KNOWN_LOCATIONS.any?{ |known_location| location.include?(known_location) }
       location
     end.compact
 
