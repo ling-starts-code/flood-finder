@@ -18,7 +18,7 @@ namespace :scrape do
 
     locations = doc.css('div').map do |div_element|
       location = div_element.text.strip
-      next unless KNOWN_LOCATIONS.map { |loc| location.include?(loc) }.first
+      next unless KNOWN_LOCATIONS.map{ |loc| location.include?(loc) }.uniq.any?{ |x| x == true }
       location
     end.compact
 
