@@ -3,54 +3,24 @@ require 'open-uri'
 require 'byebug'
 
 namespace :scrape do
-  desc 'Scrape weather data from metservice.com and save to database'
-  task weather: :environment do
-    puts "starting the scripts"
+   KNOWN_LOCATIONS = [
+      "Wellington",
+      "Castlepoint",
+      "Levin",
+      "Mana Island"
+   ]
 
-    # url = 'https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations#wellington-and-wairarapa'
-    #doc = Nokogiri::HTML( HTTParty.get(url))
+   desc 'Scrape weather data from metservice.com and save to database'
+   task weather: :environment do
+      puts "starting the scripts"
+      url = "https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations"
+      doc = Nokogiri::HTML(URI.open(url))
 
-    url = "https://www.metservice.com/publicData/webdata/maps-radar/3-hourly-observations"
-    
-    doc = Nokogiri::HTML(URI.open(url))
-  
-    #json_string = JSON.dump(doc)
-   # parsed_data = JSON.parse(json_string)
-    
-    #urlSlug = doc.xpath("//urlSlug")
-  
-    text = doc.text()
-
-    locations = []
-    results = []
-
-     doc.css('div').each do |div_element|
-      # result = div_element.children[1].children
-
-      location = div_element.text.strip
-      li = div_element.css("li").text.strip
-    
-      # observations << observation
-      locations << location
-      results << li
-     end
-
- # Print the extracted observations
-  locations.each do |location|
-   puts location
-  end
-
-   results.each do |li|
-    puts li
- end
-    
- byebug
-    
-    
-    main = doc.css("main")
-  
-  
-    # response = HTTParty.get(url)
+      doc.css('div').each do |div_element|
+         location = div_element.text.strip
+         next unless KNOWN_LOCATIONS.map { |loc| location.include?(loc) }.first
+         puts location
+      end
 
     # if response.code == 200
     #   html = Nokogiri::HTML(response.body)
