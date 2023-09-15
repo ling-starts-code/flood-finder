@@ -19,7 +19,13 @@ namespace :scrape do
     locations = doc.css('div').map do |div_element|
       location = div_element.text.strip
       next unless KNOWN_LOCATIONS.any?{ |known_location| location.include?(known_location) }
-      location
+      temperature = location[/Temperature:\s(-?\d+)°/, 1]
+      wind_speed = location[/Wind Speed:\s(\d+)km\/h/, 1]
+      wind_direction = location[/WInd Direction:\s([A-Za-z\s]+)/, 1]
+      rainfall = location[/Rainfall \(last hour\):\s([\d.]+)mm/, 1]
+      humidity = location[/Humidity:\s(\d+)%/, 1]
+      pressure = location[/Pressure:\s(\d+)hPa/, 1]
+      byebug
     end.compact
 
     locations.each{ |location| puts location }
