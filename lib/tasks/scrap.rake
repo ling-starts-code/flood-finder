@@ -8,7 +8,12 @@ namespace :scrape do
     "Wellington",
     "Castlepoint",
     "Levin",
-    "Mana Island"
+    "Mana Island",
+    "Wellington (Kelburn)",
+    "Lower Hutt",
+    "Paraparaumu",
+    "Ngawi",
+    "Masterton",
   ]
 
   desc 'Scrape weather data from metservice.com and save to database'
@@ -19,53 +24,18 @@ namespace :scrape do
     locations = doc.css('div').map do |div_element|
       location = div_element.text.strip
       next unless KNOWN_LOCATIONS.any?{ |known_location| location.include?(known_location) }
-      temperature = location[/Temperature:\s(-?\d+)°/, 1]
-      wind_speed = location[/Wind Speed:\s(\d+)km\/h/, 1]
-      wind_direction = location[/WInd Direction:\s([A-Za-z\s]+)/, 1]
-      rainfall = location[/Rainfall \(last hour\):\s([\d.]+)mm/, 1]
-      humidity = location[/Humidity:\s(\d+)%/, 1]
-      pressure = location[/Pressure:\s(\d+)hPa/, 1]
-      byebug
+      model = WeatherObservation.new
+      model.location = location.split(' ').first
+      model.temperature = location[/Temperature:\s(-?\d+)°/, 1]
+      model.wind_speed = location[/Wind Speed:\s(\d+)km\/h/, 1]
+      model.wind_direction = location[/WInd Direction:\s([A-Za-z\s]+)/, 1]
+      model.rainfall = location[/Rainfall \(last hour\):\s([\d.]+)mm/, 1]
+      model.humidity = location[/Humidity:\s(\d+)%/, 1]
+      model.pressure = location[/Pressure:\s(\d+)hPa/, 1]
+      model.save
+      #byebug
     end.compact
-
+    byebug
     locations.each{ |location| puts location }
-
-    # if response.code == 200
-    #   html = Nokogiri::HTML(response.body)
-
-    #   # # Assuming the data for Wellington and Wairarapa is in a div with class "location-data"
-    #   # locations_data = html.css('div.location-data')
-
-    #   # locations_data.each do |location_data|
-    #   #   # Extract the location name from the "location" span
-    #   #   location_name = location_data.css('span.location').text.strip
-
-    #   #   # Check if the location matches Wellington or Wairarapa
-    #   #   if location_name.downcase.include?('wellington') || location_name.downcase.include?('wairarapa')
-    #   #     # Extract the temperature, wind speed, wind direction, rainfall, humidity, and pressure using regex
-    #   #     temperature = location_data.text[/Temperature:\s(-?\d+)°/, 1]
-    #   #     wind_speed = location_data.text[/Wind Speed:\s(\d+)km\/h/, 1]
-    #   #     wind_direction = location_data.text[/WInd Direction:\s([A-Za-z\s]+)/, 1]
-    #   #     rainfall = location_data.text[/Rainfall \(last hour\):\s([\d.]+)mm/, 1]
-    #   #     humidity = location_data.text[/Humidity:\s(\d+)%/, 1]
-    #   #     pressure = location_data.text[/Pressure:\s(\d+)hPa/, 1]
-
-    #       # Create a new WeatherObservation record and save it to the database
-    #       WeatherObservation.create(
-    #         location: location_name,
-    #         temperature: temperature,
-    #         wind_speed: wind_speed,
-    #         wind_direction: wind_direction,
-    #         rainfall: rainfall,
-    #         humidity: humidity,
-    #         pressure: pressure
-    #       )
-    #     end
-    #   end
-
-    #   puts "Data has been saved to the database."
-    # else
-    #   puts "Error: Failed to fetch the URL (#{response.code})"
-    # end
   end
 end
