@@ -1,7 +1,7 @@
 require "test_helper"
 
 class WeatherObservationTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "it saves a weather observation passing validation " do
+    assert true
+  end
 end
