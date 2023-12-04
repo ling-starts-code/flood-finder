@@ -1,0 +1,24 @@
+<h1>Weather Observations</h1>
+<table>
+  <tr>
+    <th>Location</th>
+    <th>Temperature</th>
+    <th>Wind Speed</th>
+    <th>Wind Direction</th>
+    <th>Rainfall (last hour)</th>
+    <th>Humidity</th>
+    <th>Pressure</th>
+  </tr>
+  <% @weather_observations.each do |observation| %>
+    <tr>
+      <td><%= observation.location %></td>
+      <td><%= observation.temperature %></td>
+      <td><%= observation.wind_speed %></td>
+      <td><%= observation.wind_direction %></td>
+      <td><%= observation.rainfall %></td>
+      <td><%= observation.humidity %></td>
+      <td><%= observation.pressure %></td>
+    </tr>
+  <% end %>
+</table>
+

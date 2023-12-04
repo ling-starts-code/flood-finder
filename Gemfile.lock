@@ -74,6 +74,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (6.0.0)
     builder (3.2.4)
+    byebug (11.1.3)
     bundle-audit (0.1.0)
       bundler-audit
     bundler-audit (0.9.1)
@@ -98,6 +99,9 @@ GEM
     erubi (1.12.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.6)
@@ -124,6 +128,7 @@ GEM
     mini_mime (1.1.2)
     minitest (5.18.0)
     msgpack (1.7.0)
+    multi_xml (0.6.0)
     net-imap (0.3.4)
       date
       net-protocol
@@ -281,10 +286,12 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
+  byebug
   brakeman
   bundle-audit
   capybara
   debug
+  httparty
   importmap-rails
   jbuilder
   nokogiri (~> 1.14, >= 1.14.3)

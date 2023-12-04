@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  location: MyString
+  temperature: 1
+  wind_speed: 1
+  wind_direction: MyString
+  rainfall: 1.5
+  humidity: 1
+  pressure: 1
+
+two:
+  location: MyString
+  temperature: 1
+  wind_speed: 1
+  wind_direction: MyString
+  rainfall: 1.5
+  humidity: 1
+  pressure: 1
