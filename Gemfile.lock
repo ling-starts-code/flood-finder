@@ -175,6 +175,10 @@ GEM
       activesupport (= 7.0.4.3)
       bundler (>= 1.15.0)
       railties (= 7.0.4.3)
+    rails-controller-testing (1.0.5)
+      actionpack (>= 5.0.1.rc1)
+      actionview (>= 5.0.1.rc1)
+      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
@@ -325,6 +329,7 @@ DEPENDENCIES
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)
 <<<<<<< HEAD
+<<<<<<< HEAD
   rspec-rails (~> 5.0, >= 5.0.1)
   rubocop
   rubocop-discourse
@@ -332,6 +337,9 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
 =======
+=======
+  rails-controller-testing
+>>>>>>> 07b71ea (refcator and added more unit tests)
   rspec-rails
 >>>>>>> 0be484a (first test case for model using rspec)
   selenium-webdriver
